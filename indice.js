@@ -1,5 +1,28 @@
-const datosTeclado = [
-  {categoria: "HARDWARE_K530", accion: "Flecha Arriba", teclas: "FN1 + W", descripcion: "Moverse por el historial"},
-  {categoria: "ANDROID_S20", accion: "Ir a Home", teclas: "Win + Enter", descripcion: "Vuelve a la pantalla principal"},
-  {categoria: "TERMUX_CMD", accion: "Limpiar Pantalla", teclas: "Ctrl + L", descripcion: "Limpia el texto visible"}
-];
+async function cargarGuia() {
+    const contenedor = document.getElementById('guia');
+    try {
+        const respuesta = await fetch('indice.txt');
+        const texto = await respuesta.text();
+        const lineas = texto.split('\n');
+
+        contenedor.innerHTML = ''; // Limpiar carga
+
+        lineas.forEach(linea => {
+            if (linea.trim() === '') return;
+            const [categoria, accion, teclas, descripcion] = linea.split('|');
+            
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <div class="categoria">${categoria}</div>
+                <div class="accion">${accion}</div>
+                <div class="teclas">${teclas}</div>
+                <div class="descripcion">${descripcion}</div>
+            `;
+            contenedor.appendChild(card);
+        });
+    } catch (error) {
+        contenedor.innerHTML = '<p>Error cargando los datos...</p>';
+    }
+}
+window.onload = cargarGuia;
