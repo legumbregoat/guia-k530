@@ -1,0 +1,4 @@
+HARDWARE_K530|Flecha Arriba|FN1 + W|Moverse por el historial
+HARDWARE_K530|Flecha Izquierda|FN1 + A|Mover cursor izquierda
+ANDROID_S20|Ir a Home|Win + Enter|Vuelve a la pantalla principal
+TERMUX_CMD|Limpiar Pantalla|Ctrl + L|Limpia el texto visible
