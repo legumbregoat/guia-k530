@@ -140,18 +140,7 @@
 
     <script src="indice.js"></script>
     <script>
-        const tabla = document.querySelector("#tabla-atajos tbody");
-        datosTeclado.forEach(truco => {
-            const fila = document.createElement("tr");
-            let catNombre = truco.categoria.replace('_', ' ');
-            fila.innerHTML = `
-                <td class="cat-${truco.categoria}"><strong>${catNombre}</strong></td>
-                <td><strong>${truco.accion}</strong></td>
-                <td><code>${truco.teclas}</code></td>
-                <td>${truco.descripcion}</td>
-            `;
-            tabla.appendChild(fila);
-        });
+    indice.js
     </script>
 </body>
 </html>
