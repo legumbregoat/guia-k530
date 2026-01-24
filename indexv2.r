@@ -1,45 +1,4 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guía Maestra K530 + S20</title>
-    <style>
-    /* =========================================
-       ESTILOS PARA PANTALLA (WEB / MÓVIL)
-       Diseño espacioso, moderno y táctil.
-       ========================================= */
-    body { 
-        background-color: #f2f2f7; 
-        color: #1c1c1e; 
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
-        margin: 0; 
-        padding: 20px; 
-    }
-
-    h1 { text-align: center; font-size: 1.8rem; margin-bottom: 20px; color: #000; letter-spacing: -0.5px; }
-
-    /* Controles (Buscador y botones) */
-    .controls { display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px; max-width: 800px; margin-left: auto; margin-right: auto; }
-    
-    #buscador {
-        width: 100%; padding: 14px; font-size: 1rem; border: 1px solid #d1d1d6; border-radius: 14px;
-        box-sizing: border-box; outline: none; transition: all 0.2s ease; background: white;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.03);
-    }
-    #buscador:focus { border-color: #007aff; box-shadow: 0 0 0 4px rgba(0,122,255,0.15); }
-
-    .filter-buttons { display: flex; gap: 10px; overflow-x: auto; padding: 4px; -webkit-overflow-scrolling: touch; }
-    .filter-btn {
-        background: #e5e5ea; border: none; padding: 10px 18px; border-radius: 20px;
-        font-size: 0.9rem; font-weight: 600; white-space: nowrap; cursor: pointer; transition: 0.2s; color: #3a3a3c;
-    }
-    .filter-btn.active { background: #007aff; color: white; box-shadow: 0 4px 10px rgba(0,122,255,0.3); }
-    
-    .btn-print { 
-        background: #1c1c1e; color: white; border: none; width: 100%; padding: 14px; 
-        font-size: 1rem; font-weight: 600; border-radius: 14px; cursor: pointer; margin-top: 5px; 
-        transition: transform 0.1s;
+on: transform 0.1s;
     }
     .btn-print:active { transform: scale(0.98); }
 
