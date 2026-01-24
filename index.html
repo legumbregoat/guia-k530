@@ -5,53 +5,168 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Guía Maestra K530 + S20</title>
     <style>
-        /* ESTILOS BASE (Del original) */
-        body { background-color: #f2f2f7; color: #1c1c1e; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 20px; }
-        h1 { text-align: center; font-size: 1.5rem; margin-bottom: 20px; color: #000; }
-        
-        /* ESTILOS DE UTILIDAD AGREGADOS PARA LA INTERFAZ */
-        .controls { display: flex; flex-direction: column; gap: 10px; margin-bottom: 25px; }
-        
-        #buscador {
-            width: 100%; padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 12px;
-            box-sizing: border-box; outline: none; transition: 0.3s;
+    /* =========================================
+       ESTILOS PARA PANTALLA (WEB / MÓVIL)
+       Diseño espacioso, moderno y táctil.
+       ========================================= */
+    body { 
+        background-color: #f2f2f7; 
+        color: #1c1c1e; 
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+        margin: 0; 
+        padding: 20px; 
+    }
+
+    h1 { text-align: center; font-size: 1.8rem; margin-bottom: 20px; color: #000; letter-spacing: -0.5px; }
+
+    /* Controles (Buscador y botones) */
+    .controls { display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px; max-width: 800px; margin-left: auto; margin-right: auto; }
+    
+    #buscador {
+        width: 100%; padding: 14px; font-size: 1rem; border: 1px solid #d1d1d6; border-radius: 14px;
+        box-sizing: border-box; outline: none; transition: all 0.2s ease; background: white;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    }
+    #buscador:focus { border-color: #007aff; box-shadow: 0 0 0 4px rgba(0,122,255,0.15); }
+
+    .filter-buttons { display: flex; gap: 10px; overflow-x: auto; padding: 4px; -webkit-overflow-scrolling: touch; }
+    .filter-btn {
+        background: #e5e5ea; border: none; padding: 10px 18px; border-radius: 20px;
+        font-size: 0.9rem; font-weight: 600; white-space: nowrap; cursor: pointer; transition: 0.2s; color: #3a3a3c;
+    }
+    .filter-btn.active { background: #007aff; color: white; box-shadow: 0 4px 10px rgba(0,122,255,0.3); }
+    
+    .btn-print { 
+        background: #1c1c1e; color: white; border: none; width: 100%; padding: 14px; 
+        font-size: 1rem; font-weight: 600; border-radius: 14px; cursor: pointer; margin-top: 5px; 
+        transition: transform 0.1s;
+    }
+    .btn-print:active { transform: scale(0.98); }
+
+    /* Grid de Tarjetas en Pantalla */
+    .card-container { 
+        display: grid; 
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+        gap: 16px; 
+    }
+
+    .truco-card { 
+        background: white; 
+        padding: 18px; 
+        border-radius: 18px; /* Bordes bien redondeados en web */
+        box-shadow: 0 4px 12px rgba(0,0,0,0.06); 
+        display: flex; 
+        flex-direction: column; 
+        gap: 10px; 
+        border-left: 6px solid #ccc; 
+        transition: transform 0.2s, box-shadow 0.2s; 
+    }
+    .truco-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+
+    .card-header { display: flex; justify-content: space-between; align-items: center; }
+    .accion-titulo { font-size: 1.1rem; font-weight: 700; margin: 0; letter-spacing: -0.3px; }
+    
+    .teclas-code { 
+        background: #f2f2f7; 
+        padding: 8px 12px; 
+        border-radius: 10px; 
+        font-family: "Menlo", "Consolas", monospace; 
+        font-weight: 700; 
+        font-size: 0.9rem; 
+        color: #000; 
+        text-align: center; 
+        align-self: flex-start; 
+        border: 1px solid #e5e5ea;
+    }
+    
+    .desc-text { font-size: 0.95rem; color: #636366; line-height: 1.4; margin: 0; }
+
+    /* Colores de Categoría */
+    .cat-HARDWARE_K530 { border-left-color: #ff3b30; }
+    .cat-ANDROID_S20 { border-left-color: #34c759; }
+    .cat-TERMUX_CMD { border-left-color: #007aff; }
+    .cat-TEXT_EDIT_ACODE { border-left-color: #ff9500; }
+    .cat-BROWSER_WEB { border-left-color: #5856d6; }
+
+
+    /* =========================================
+       ESTILOS PARA IMPRESIÓN (A4 OPTIMIZADO)
+       Compacto, profesional, diseño tipo "Grid".
+       ========================================= */
+    @media print {
+        @page {
+            size: A4;
+            margin: 5mm 5mm 5mm 8mm; /* Márgenes mínimos */
         }
-        #buscador:focus { border-color: #007aff; box-shadow: 0 0 0 3px rgba(0,122,255,0.2); }
 
-        .filter-buttons { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 5px; -webkit-overflow-scrolling: touch; }
-        .filter-btn {
-            background: #e5e5ea; border: none; padding: 8px 16px; border-radius: 20px;
-            font-size: 0.9rem; font-weight: 600; white-space: nowrap; cursor: pointer; transition: 0.2s;
+        body {
+            background: white;
+            padding: 0;
+            -webkit-print-color-adjust: exact; /* Fuerza a imprimir colores de fondo */
+            print-color-adjust: exact;
+            zoom: 0.85; /* Reduce todo al 85% para asegurar que entre */
         }
-        .filter-btn.active { background: #007aff; color: white; }
+
+        /* Ocultar interfaz web */
+        .controls, .btn-print, #buscador { display: none !important; }
+
+        h1 {
+            font-size: 14pt;
+            margin: 0 0 10px 0;
+            text-align: left;
+            border-bottom: 2px solid #000;
+            padding-bottom: 5px;
+        }
+
+        /* Layout de 3 Columnas */
+        .card-container {
+            display: block;
+            column-count: 3;
+            column-gap: 8px;
+            width: 100%;
+        }
+
+        .truco-card {
+            break-inside: avoid; /* Evita que se corten las tarjetas */
+            page-break-inside: avoid;
+            display: block; /* Necesario para columnas */
+            
+            /* ESTÉTICA PROFESIONAL EN PAPEL */
+            background-color: #fff;
+            border: 1px solid #dcdcdc; /* Borde gris sutil */
+            border-left-width: 5px !important; /* Mantiene la barra de color */
+            border-radius: 8px; /* Bordes redondeados pero más pequeños */
+            padding: 6px 8px;
+            margin-bottom: 6px; /* Espacio entre tarjetas vertical */
+            box-shadow: none; /* Quitamos sombras para impresión limpia */
+        }
+
+        /* Ajuste de tipografía para ahorrar espacio */
+        .card-header { margin-bottom: 3px; }
         
-        .btn-print { background: #1c1c1e; color: white; border: none; width: 100%; padding: 14px; font-size: 1rem; font-weight: 600; border-radius: 12px; cursor: pointer; margin-top: 10px; }
-        .btn-print:active { transform: scale(0.98); }
-
-        /* GRID DE TARJETAS */
-        .card-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px; }
-        .truco-card { background: white; padding: 16px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); display: flex; flex-direction: column; gap: 8px; border-left: 5px solid #ccc; transition: transform 0.2s; }
-        .truco-card:hover { transform: translateY(-2px); }
-
-        .card-header { display: flex; justify-content: space-between; align-items: center; }
-        .accion-titulo { font-size: 1.1rem; font-weight: 700; margin: 0; }
-        .teclas-code { background: #e5e5ea; padding: 6px 10px; border-radius: 8px; font-family: "Courier New", monospace; font-weight: bold; font-size: 0.95rem; color: #000; text-align: center; align-self: flex-start; }
-        .desc-text { font-size: 0.9rem; color: #666; line-height: 1.4; margin: 0; }
-
-        /* COLORES DE CATEGORÍA */
-        .cat-HARDWARE_K530 { border-left-color: #ff3b30; } /* Rojo */
-        .cat-ANDROID_S20 { border-left-color: #34c759; }   /* Verde */
-        .cat-TERMUX_CMD { border-left-color: #007aff; }    /* Azul */
-        .cat-TEXT_EDIT_ACODE { border-left-color: #ff9500; } /* Naranja */
-        .cat-BROWSER_WEB { border-left-color: #5856d6; }   /* Violeta */
-
-        @media print {
-            body { background: white; padding: 0; }
-            .controls, .btn-print { display: none; }
-            .card-container { display: block; }
-            .truco-card { break-inside: avoid; border: 1px solid #ddd; border-left: 5px solid #000; margin-bottom: 10px; box-shadow: none; }
+        .accion-titulo {
+            font-size: 9pt; /* Título legible */
+            color: #000;
         }
-    </style>
+
+        .teclas-code {
+            font-size: 8pt;
+            padding: 2px 6px;
+            border-radius: 6px;
+            background-color: #f0f0f0 !important; /* Gris muy claro para el código */
+            border: 1px solid #ccc;
+            margin-bottom: 3px;
+            display: inline-block;
+        }
+
+        .desc-text {
+            font-size: 8pt;
+            color: #444;
+            line-height: 1.1;
+        }
+    }
+</style>
+
 </head>
 <body>
 
