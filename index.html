@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía K530 + S20</title>
+    <style>
+        /* =========================================
+           ESTILOS PARA PANTALLA (Tu vista móvil bonita)
+           ========================================= */
+        body { 
+            background-color: #f2f2f7; 
+            color: #1c1c1e; 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+            margin: 0; padding: 20px; 
+        }
+
+        h1 { text-align: center; font-size: 1.8rem; margin-bottom: 20px; color: #000; letter-spacing: -0.5px; }
+
+        .controls { display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px; max-width: 800px; margin-left: auto; margin-right: auto; }
+        
+        #buscador {
+            width: 100%; padding: 14px; font-size: 1rem; border: 1px solid #d1d1d6; border-radius: 14px;
+            box-sizing: border-box; outline: none; background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        }
+
+        .filter-buttons { display: flex; gap: 10px; overflow-x: auto; padding: 4px; -webkit-overflow-scrolling: touch; }
+        .filter-btn {
+            background: #e5e5ea; border: none; padding: 10px 18px; border-radius: 20px;
+            font-size: 0.9rem; font-weight: 600; white-space: nowrap; cursor: pointer; color: #3a3a3c;
+        }
+        .filter-btn.active { background: #007aff; color: white; }
+        
+        .btn-print { 
+            background: #1c1c1e; color: white; border: none; width: 100%; padding: 14px; 
+            font-size: 1rem; font-weight: 600; border-radius: 14px; cursor: pointer; margin-top: 5px; 
+        }
+        .btn-print:active { transform: scale(0.98); }
+
+        .card-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+
+        .truco-card { 
+            background: white; padding: 18px; border-radius: 18px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06); display: flex; flex-direction: column; 
+            gap: 10px; border-left: 6px solid #ccc; 
+        }
+
+        .card-header { display: flex; justify-content: space-between; align-items: center; }
+        .accion-titulo { font-size: 1.1rem; font-weight: 700; margin: 0; }
+        
+        .teclas-code { 
+            background: #f2f2f7; padding: 8px 12px; border-radius: 10px; 
+            font-family: "Menlo", "Consolas", monospace; font-weight: 700; font-size: 0.9rem; 
+            color: #000; align-self: flex-start; border: 1px solid #e5e5ea;
+        }
+        
+        .desc-text { font-size: 0.95rem; color: #636366; line-height: 1.4; margin: 0; }
+
+        /* Colores */
+        .cat-HARDWARE_K530 { border-left-color: #ff3b30; }
+        .cat-ANDROID_S20 { border-left-color: #34c759; }
+        .cat-TERMUX_CMD { border-left-color: #007aff; }
+        .cat-TEXT_EDIT_ACODE { border-left-color: #ff9500; }
+        .cat-BROWSER_WEB { border-left-color: #5856d6; }
+
+        /* =========================================
+           ESTILOS PARA IMPRESIÓN (MODO ULTRA COMPACTO)
+           ========================================= */
+        @media print {
+            @page { 
+                size: A4; 
+                margin: 4mm; /* Márgenes casi al borde */
+            }
+            body { 
+                background: white; 
+                padding: 0; 
+                -webkit-print-color-adjust: exact; 
+                print-color-adjust: exact; 
+                zoom: 0.68; /* <--- CLAVE: Reducimos al 68% para que entre todo */
+            }
+            
+            /* Ocultar interfaz innecesaria */
+            .controls, .btn-print, #buscador { display: none !important; }
+            
+            h1 { 
+                font-size: 12pt; /* Título principal más pequeño */
+                margin: 0 0 8px 0; 
+                text-align: left; 
+                border-bottom: 1px solid #000; 
+            }
+            
+            /* 4 COLUMNAS EN LUGAR DE 3 */
+            .card-container { 
+                display: block; 
+                column-count: 4; 
+                column-gap: 6px; 
+                width: 100%; 
+            }
+            
+            .truco-card {
+                break-inside: avoid; 
+                page-break-inside: avoid; 
+                display: block;
+                border: 1px solid #ccc; 
+                border-left-width: 4px !important;
+                border-radius: 6px; 
+                padding: 4px 5px; /* Padding interno reducido */
+                margin-bottom: 4px; /* Menos espacio entre tarjetas */
+                box-shadow: none;
+            }
+            
+            .card-header { margin-bottom: 1px; }
+            
+            .accion-titulo { 
+                font-size: 8.5pt; /* Texto título más pequeño */
+                color: #000; 
+                font-weight: 800;
+            }
+            
+            .teclas-code { 
+                font-size: 7.5pt; /* Código más compacto */
+                padding: 1px 4px; 
+                border-radius: 4px; 
+                background-color: #eee !important; 
+                border: 1px solid #bbb; 
+                margin-bottom: 1px; 
+                display: inline-block; 
+                font-weight: bold;
+            }
+            
+            .desc-text { 
+                font-size: 7.5pt; /* Descripción pequeña */
+                color: #333; 
+                line-height: 1.1; 
+                margin-top: 1px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Guía K530 + S20</h1>
+
+    <div class="controls">
+        <input type="text" id="buscador" placeholder="🔍 Buscar comando...">
+        <div class="filter-buttons">
+            <button class="filter-btn active" data-filter="all">Todos</button>
+            <button class="filter-btn" data-filter="cat-HARDWARE_K530">Teclado</button>
+            <button class="filter-btn" data-filter="cat-ANDROID_S20">Android</button>
+            <button class="filter-btn" data-filter="cat-TERMUX_CMD">Termux</button>
+            <button class="filter-btn" data-filter="cat-TEXT_EDIT_ACODE">Acode</button>
+            <button class="filter-btn" data-filter="cat-BROWSER_WEB">Navegador</button>
+        </div>
+        <button class="btn-print" id="btnPrint">🖨️ Imprimir Guía</button>
+    </div>
+
+    <div id="contenedor-trucos" class="card-container">
+        <div class="truco-card cat-HARDWARE_K530"><div class="card-header"><p class="accion-titulo">Flecha Arriba</p></div><div class="teclas-code">FN1 + W</div><p class="desc-text">Mueve cursor arriba</p></div>
+        <div class="truco-card cat-HARDWARE_K530"><div class="card-header"><p class="accion-titulo">Flecha Izquierda</p></div><div class="teclas-code">FN1 + A</div><p class="desc-text">Mueve cursor izquierda</p></div>
+        <div class="truco-card cat-HARDWARE_K530"><div class="card-header"><p class="accion-titulo">Flecha Abajo</p></div><div class="teclas-code">FN1 + S</div><p class="desc-text">Mueve cursor abajo</p></div>
+        <div class="truco-card cat-HARDWARE_K530"><div class="card-header"><p class="accion-titulo">Flecha Derecha</p></div><div class="teclas-code">FN1 + D</div><p class="desc-text">Mueve cursor derecha</p></div>
+        <div class="truco-card cat-HARDWARE_K530"><div class="card-header"><p class="accion-titulo">Escape (Esc)</p></div><div class="teclas-code">FN1 + 1</div><p class="desc-text">Salir / Cancelar</p></div>
+        <div class="truco-card cat-HARDWARE_K530"><div class="card-header"><p class="accion-titulo">Tilde (~)</p></div><div class="teclas-code">FN1 + Shift + Esc</div><p class="desc-text">Directorio Home (~)</p></div>
+        <div class="truco-card cat-HARDWARE_K530"><div class="card-header"><p class="accion-titulo">Backtick (`)</p></div><div class="teclas-code">FN1 + Esc</div><p class="desc-text">Scripts Bash</p></div>
+        <div class="truco-card cat-HARDWARE_K530"><div class="card-header"><p class="accion-titulo">Borrar (Del)</p></div><div class="teclas-code">FN1 + .</div><p class="desc-text">Borra delante</p></div>
+        <div class="truco-card cat-HARDWARE_K530"><div class="card-header"><p class="accion-titulo">Inicio (Home)</p></div><div class="teclas-code">FN1 + [</div><p class="desc-text">Principio de línea</p></div>
+        <div class="truco-card cat-HARDWARE_K530"><div class="card-header"><p class="accion-titulo">Fin (End)</p></div><div class="teclas-code">FN1 + ]</div><p class="desc-text">Final de línea</p></div>
+        <div class="truco-card cat-HARDWARE_K530"><div class="card-header"><p class="accion-titulo">Re Pág</p></div><div class="teclas-code">FN1 + ;</div><p class="desc-text">Sube página</p></div>
+        <div class="truco-card cat-HARDWARE_K530"><div class="card-header"><p class="accion-titulo">Av Pág</p></div><div class="teclas-code">FN1 + '</div><p class="desc-text">Baja página</p></div>
+        <div class="truco-card cat-HARDWARE_K530"><div class="card-header"><p class="accion-titulo">Print Screen</p></div><div class="teclas-code">FN1 + P</div><p class="desc-text">Captura pantalla</p></div>
+
+        <div class="truco-card cat-ANDROID_S20"><div class="card-header"><p class="accion-titulo">Ir a Home</p></div><div class="teclas-code">Win + Enter</div><p class="desc-text">Pantalla principal</p></div>
+        <div class="truco-card cat-ANDROID_S20"><div class="card-header"><p class="accion-titulo">Notificaciones</p></div><div class="teclas-code">Win + N</div><p class="desc-text">Bajar barra</p></div>
+        <div class="truco-card cat-ANDROID_S20"><div class="card-header"><p class="accion-titulo">Buscar App</p></div><div class="teclas-code">Win + F</div><p class="desc-text">Buscador interno</p></div>
+        <div class="truco-card cat-ANDROID_S20"><div class="card-header"><p class="accion-titulo">Cambiar App</p></div><div class="teclas-code">Alt + Tab</div><p class="desc-text">Multitarea</p></div>
+        <div class="truco-card cat-ANDROID_S20"><div class="card-header"><p class="accion-titulo">Atrás (Back)</p></div><div class="teclas-code">Esc</div><p class="desc-text">Volver atrás</p></div>
+        <div class="truco-card cat-ANDROID_S20"><div class="card-header"><p class="accion-titulo">Clic Derecho</p></div><div class="teclas-code">FN1 + 0</div><p class="desc-text">Menú contextual</p></div>
+        <div class="truco-card cat-ANDROID_S20"><div class="card-header"><p class="accion-titulo">Bloquear</p></div><div class="teclas-code">Win + L</div><p class="desc-text">Apaga pantalla</p></div>
+        <div class="truco-card cat-ANDROID_S20"><div class="card-header"><p class="accion-titulo">Split Screen</p></div><div class="teclas-code">Win + [ o ]</div><p class="desc-text">Dividir pantalla</p></div>
+        <div class="truco-card cat-ANDROID_S20"><div class="card-header"><p class="accion-titulo">Zoom Sistema</p></div><div class="teclas-code">Ctrl+Alt+ (+/-)</div><p class="desc-text">Accesibilidad</p></div>
+
+        <div class="truco-card cat-TERMUX_CMD"><div class="card-header"><p class="accion-titulo">Limpiar (Clear)</p></div><div class="teclas-code">Ctrl + L</div><p class="desc-text">Limpia pantalla</p></div>
+        <div class="truco-card cat-TERMUX_CMD"><div class="card-header"><p class="accion-titulo">Kill Proceso</p></div><div class="teclas-code">Ctrl + C</div><p class="desc-text">Cancela acción</p></div>
+        <div class="truco-card cat-TERMUX_CMD"><div class="card-header"><p class="accion-titulo">Salir (Exit)</p></div><div class="teclas-code">Ctrl + D</div><p class="desc-text">Cierra sesión</p></div>
+        <div class="truco-card cat-TERMUX_CMD"><div class="card-header"><p class="accion-titulo">Completar</p></div><div class="teclas-code">Tab</div><p class="desc-text">Autocompletar</p></div>
+        <div class="truco-card cat-TERMUX_CMD"><div class="card-header"><p class="accion-titulo">Historial</p></div><div class="teclas-code">Flecha Arriba</div><p class="desc-text">Comando anterior</p></div>
+        <div class="truco-card cat-TERMUX_CMD"><div class="card-header"><p class="accion-titulo">Buscar Hist.</p></div><div class="teclas-code">Ctrl + R</div><p class="desc-text">Busca comandos</p></div>
+        <div class="truco-card cat-TERMUX_CMD"><div class="card-header"><p class="accion-titulo">Inicio Línea</p></div><div class="teclas-code">Ctrl + A</div><p class="desc-text">Cursor al inicio</p></div>
+        <div class="truco-card cat-TERMUX_CMD"><div class="card-header"><p class="accion-titulo">Fin Línea</p></div><div class="teclas-code">Ctrl + E</div><p class="desc-text">Cursor al final</p></div>
+        <div class="truco-card cat-TERMUX_CMD"><div class="card-header"><p class="accion-titulo">Borrar Línea</p></div><div class="teclas-code">Ctrl + K</div><p class="desc-text">Borra al final</p></div>
+        <div class="truco-card cat-TERMUX_CMD"><div class="card-header"><p class="accion-titulo">Pegar Termux</p></div><div class="teclas-code">Ctrl + Alt + V</div><p class="desc-text">Pegar en consola</p></div>
+        <div class="truco-card cat-TERMUX_CMD"><div class="card-header"><p class="accion-titulo">Tamaño Letra</p></div><div class="teclas-code">Ctrl+Alt+ (+/-)</div><p class="desc-text">Zoom fuente</p></div>
+
+        <div class="truco-card cat-TEXT_EDIT_ACODE"><div class="card-header"><p class="accion-titulo">Seleccionar</p></div><div class="teclas-code">Shift + Flechas</div><p class="desc-text">Resaltar texto</p></div>
+        <div class="truco-card cat-TEXT_EDIT_ACODE"><div class="card-header"><p class="accion-titulo">Select Palabra</p></div><div class="teclas-code">Ctrl+Shift+Flecha</div><p class="desc-text">Palabra entera</p></div>
+        <div class="truco-card cat-TEXT_EDIT_ACODE"><div class="card-header"><p class="accion-titulo">Copiar</p></div><div class="teclas-code">Ctrl + C</div><p class="desc-text">Copiar texto</p></div>
+        <div class="truco-card cat-TEXT_EDIT_ACODE"><div class="card-header"><p class="accion-titulo">Cortar</p></div><div class="teclas-code">Ctrl + X</div><p class="desc-text">Cortar texto</p></div>
+        <div class="truco-card cat-TEXT_EDIT_ACODE"><div class="card-header"><p class="accion-titulo">Pegar</p></div><div class="teclas-code">Ctrl + V</div><p class="desc-text">Pegar texto</p></div>
+        <div class="truco-card cat-TEXT_EDIT_ACODE"><div class="card-header"><p class="accion-titulo">Guardar</p></div><div class="teclas-code">Ctrl + S</div><p class="desc-text">Guardar archivo</p></div>
+        <div class="truco-card cat-TEXT_EDIT_ACODE"><div class="card-header"><p class="accion-titulo">Buscar</p></div><div class="teclas-code">Ctrl + F</div><p class="desc-text">Buscar en código</p></div>
+        <div class="truco-card cat-TEXT_EDIT_ACODE"><div class="card-header"><p class="accion-titulo">Deshacer</p></div><div class="teclas-code">Ctrl + Z</div><p class="desc-text">Volver atrás</p></div>
+
+        <div class="truco-card cat-BROWSER_WEB"><div class="card-header"><p class="accion-titulo">Nueva Pestaña</p></div><div class="teclas-code">Ctrl + T</div><p class="desc-text">Abre tab nueva</p></div>
+        <div class="truco-card cat-BROWSER_WEB"><div class="card-header"><p class="accion-titulo">Cerrar Pestaña</p></div><div class="teclas-code">Ctrl + W</div><p class="desc-text">Cierra actual</p></div>
+        <div class="truco-card cat-BROWSER_WEB"><div class="card-header"><p class="accion-titulo">Reabrir Tab</p></div><div class="teclas-code">Ctrl + Shift + T</div><p class="desc-text">Recuperar cerrada</p></div>
+        <div class="truco-card cat-BROWSER_WEB"><div class="card-header"><p class="accion-titulo">Buscar en Pág</p></div><div class="teclas-code">Ctrl + F</div><p class="desc-text">Buscar texto</p></div>
+        <div class="truco-card cat-BROWSER_WEB"><div class="card-header"><p class="accion-titulo">Barra URL</p></div><div class="teclas-code">Alt + D</div><p class="desc-text">Escribir web</p></div>
+        <div class="truco-card cat-BROWSER_WEB"><div class="card-header"><p class="accion-titulo">Refrescar</p></div><div class="teclas-code">F5</div><p class="desc-text">Recargar web</p></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('buscador');
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const cards = document.querySelectorAll('.truco-card');
+            const printBtn = document.getElementById('btnPrint');
+
+            searchInput.addEventListener('input', (e) => {
+                const term = e.target.value.toLowerCase();
+                cards.forEach(card => {
+                    const txt = card.innerText.toLowerCase();
+                    card.style.display = txt.includes(term) ? 'flex' : 'none';
+                });
+            });
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    const cat = btn.getAttribute('data-filter');
+                    cards.forEach(card => {
+                        if (cat === 'all' || card.classList.contains(cat)) {
+                            card.style.display = 'flex';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                    searchInput.value = '';
+                });
+            });
+
+            printBtn.addEventListener('click', () => {
+                window.print();
+            });
+        });
+    </script>
+</body>
+</html>
