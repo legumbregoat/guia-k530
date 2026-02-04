@@ -1,0 +1,258 @@
+on: transform 0.1s;
+    }
+    .btn-print:active { transform: scale(0.98); }
+
+    /* Grid de Tarjetas en Pantalla */
+    .card-container { 
+        display: grid; 
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+        gap: 16px; 
+    }
+
+    .truco-card { 
+        background: white; 
+        padding: 18px; 
+        border-radius: 18px; /* Bordes bien redondeados en web */
+        box-shadow: 0 4px 12px rgba(0,0,0,0.06); 
+        display: flex; 
+        flex-direction: column; 
+        gap: 10px; 
+        border-left: 6px solid #ccc; 
+        transition: transform 0.2s, box-shadow 0.2s; 
+    }
+    .truco-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+
+    .card-header { display: flex; justify-content: space-between; align-items: center; }
+    .accion-titulo { font-size: 1.1rem; font-weight: 700; margin: 0; letter-spacing: -0.3px; }
+    
+    .teclas-code { 
+        background: #f2f2f7; 
+        padding: 8px 12px; 
+        border-radius: 10px; 
+        font-family: "Menlo", "Consolas", monospace; 
+        font-weight: 700; 
+        font-size: 0.9rem; 
+        color: #000; 
+        text-align: center; 
+        align-self: flex-start; 
+        border: 1px solid #e5e5ea;
+    }
+    
+    .desc-text { font-size: 0.95rem; color: #636366; line-height: 1.4; margin: 0; }
+
+    /* Colores de Categoría */
+    .cat-HARDWARE_K530 { border-left-color: #ff3b30; }
+    .cat-ANDROID_S20 { border-left-color: #34c759; }
+    .cat-TERMUX_CMD { border-left-color: #007aff; }
+    .cat-TEXT_EDIT_ACODE { border-left-color: #ff9500; }
+    .cat-BROWSER_WEB { border-left-color: #5856d6; }
+
+
+    /* =========================================
+       ESTILOS PARA IMPRESIÓN (A4 OPTIMIZADO)
+       Compacto, profesional, diseño tipo "Grid".
+       ========================================= */
+    @media print {
+        @page {
+            size: A4;
+            margin: 5mm 5mm 5mm 8mm; /* Márgenes mínimos */
+        }
+
+        body {
+            background: white;
+            padding: 0;
+            -webkit-print-color-adjust: exact; /* Fuerza a imprimir colores de fondo */
+            print-color-adjust: exact;
+            zoom: 0.85; /* Reduce todo al 85% para asegurar que entre */
+        }
+
+        /* Ocultar interfaz web */
+        .controls, .btn-print, #buscador { display: none !important; }
+
+        h1 {
+            font-size: 14pt;
+            margin: 0 0 10px 0;
+            text-align: left;
+            border-bottom: 2px solid #000;
+            padding-bottom: 5px;
+        }
+
+        /* Layout de 3 Columnas */
+        .card-container {
+            display: block;
+            column-count: 3;
+            column-gap: 8px;
+            width: 100%;
+        }
+
+        .truco-card {
+            break-inside: avoid; /* Evita que se corten las tarjetas */
+            page-break-inside: avoid;
+            display: block; /* Necesario para columnas */
+            
+            /* ESTÉTICA PROFESIONAL EN PAPEL */
+            background-color: #fff;
+            border: 1px solid #dcdcdc; /* Borde gris sutil */
+            border-left-width: 5px !important; /* Mantiene la barra de color */
+            border-radius: 8px; /* Bordes redondeados pero más pequeños */
+            padding: 6px 8px;
+            margin-bottom: 6px; /* Espacio entre tarjetas vertical */
+            box-shadow: none; /* Quitamos sombras para impresión limpia */
+        }
+
+        /* Ajuste de tipografía para ahorrar espacio */
+        .card-header { margin-bottom: 3px; }
+        
+        .accion-titulo {
+            font-size: 9pt; /* Título legible */
+            color: #000;
+        }
+
+        .teclas-code {
+            font-size: 8pt;
+            padding: 2px 6px;
+            border-radius: 6px;
+            background-color: #f0f0f0 !important; /* Gris muy claro para el código */
+            border: 1px solid #ccc;
+            margin-bottom: 3px;
+            display: inline-block;
+        }
+
+        .desc-text {
+            font-size: 8pt;
+            color: #444;
+            line-height: 1.1;
+        }
+    }
+</style>
+
+</head>
+<body>
+
+    <h1>Guía K530 + S20</h1>
+
+    <div class="controls">
+        <input type="text" id="buscador" placeholder="🔍 Buscar comando (ej: copiar, termux, flecha)...">
+        
+        <div class="filter-buttons">
+            <button class="filter-btn active" data-filter="all">Todos</button>
+            <button class="filter-btn" data-filter="cat-HARDWARE_K530">Teclado</button>
+            <button class="filter-btn" data-filter="cat-ANDROID_S20">Android</button>
+            <button class="filter-btn" data-filter="cat-TERMUX_CMD">Termux</button>
+            <button class="filter-btn" data-filter="cat-TEXT_EDIT_ACODE">Acode</button>
+            <button class="filter-btn" data-filter="cat-BROWSER_WEB">Navegador</button>
+        </div>
+
+        <button class="btn-print" id="btnPrint">🖨️ Imprimir Guía</button>
+    </div>
+
+    <div id="contenedor-trucos" class="card-container">
+        <div class="truco-card cat-HARDWARE_K530">
+            <div class="card-header"><p class="accion-titulo">Flecha Arriba</p></div>
+            <div class="teclas-code">FN1 + W</div>
+            <p class="desc-text">Mueve el cursor hacia arriba</p>
+        </div>
+        <div class="truco-card cat-HARDWARE_K530">
+            <div class="card-header"><p class="accion-titulo">Flecha Izquierda</p></div>
+            <div class="teclas-code">FN1 + A</div>
+            <p class="desc-text">Mueve el cursor hacia la izquierda</p>
+        </div>
+        <div class="truco-card cat-HARDWARE_K530">
+            <div class="card-header"><p class="accion-titulo">Flecha Abajo</p></div>
+            <div class="teclas-code">FN1 + S</div>
+            <p class="desc-text">Mueve el cursor hacia abajo</p>
+        </div>
+        <div class="truco-card cat-HARDWARE_K530">
+            <div class="card-header"><p class="accion-titulo">Flecha Derecha</p></div>
+            <div class="teclas-code">FN1 + D</div>
+            <p class="desc-text">Mueve el cursor hacia la derecha</p>
+        </div>
+        <div class="truco-card cat-HARDWARE_K530">
+            <div class="card-header"><p class="accion-titulo">Tecla Escape (Esc)</p></div>
+            <div class="teclas-code">FN1 + 1</div>
+            <p class="desc-text">Sale de menús o cancela acciones</p>
+        </div>
+        <div class="truco-card cat-HARDWARE_K530">
+            <div class="card-header"><p class="accion-titulo">Tecla Tilde (~)</p></div>
+            <div class="teclas-code">FN1 + Shift + Esc</div>
+            <p class="desc-text">Usada para directorios Home en Linux</p>
+        </div>
+        
+        <div class="truco-card cat-ANDROID_S20">
+            <div class="card-header"><p class="accion-titulo">Ir a Home</p></div>
+            <div class="teclas-code">Win + Enter</div>
+            <p class="desc-text">Vuelve a la pantalla principal</p>
+        </div>
+        <div class="truco-card cat-ANDROID_S20">
+            <div class="card-header"><p class="accion-titulo">Notificaciones</p></div>
+            <div class="teclas-code">Win + N</div>
+            <p class="desc-text">Despliega la barra de notificaciones</p>
+        </div>
+        <div class="truco-card cat-ANDROID_S20">
+            <div class="card-header"><p class="accion-titulo">Cambiar App</p></div>
+            <div class="teclas-code">Alt + Tab</div>
+            <p class="desc-text">Alterna entre las últimas apps usadas</p>
+        </div>
+
+        <div class="truco-card cat-TERMUX_CMD">
+            <div class="card-header"><p class="accion-titulo">Limpiar Pantalla</p></div>
+            <div class="teclas-code">Ctrl + L</div>
+            <p class="desc-text">Limpia todo el texto visible (comando clear)</p>
+        </div>
+        <div class="truco-card cat-TERMUX_CMD">
+            <div class="card-header"><p class="accion-titulo">Cancelar Proceso</p></div>
+            <div class="teclas-code">Ctrl + C</div>
+            <p class="desc-text">Detiene el script o comando actual (Kill)</p>
+        </div>
+        <div class="truco-card cat-TERMUX_CMD">
+            <div class="card-header"><p class="accion-titulo">Autocompletar</p></div>
+            <div class="teclas-code">Tab</div>
+            <p class="desc-text">Completa nombres de archivos o comandos</p>
+        </div>
+        <div class="truco-card cat-TERMUX_CMD">
+            <div class="card-header"><p class="accion-titulo">Historial Atrás</p></div>
+            <div class="teclas-code">Flecha Arriba</div>
+            <p class="desc-text">Muestra el último comando escrito</p>
+        </div>
+        <div class="truco-card cat-TERMUX_CMD">
+            <div class="card-header"><p class="accion-titulo">Pegar (Termux)</p></div>
+            <div class="teclas-code">Ctrl + Alt + V</div>
+            <p class="desc-text">Pega texto en la terminal</p>
+        </div>
+
+        <div class="truco-card cat-TEXT_EDIT_ACODE">
+            <div class="card-header"><p class="accion-titulo">Guardar</p></div>
+            <div class="teclas-code">Ctrl + S</div>
+            <p class="desc-text">Guarda el archivo actual</p>
+        </div>
+        <div class="truco-card cat-TEXT_EDIT_ACODE">
+            <div class="card-header"><p class="accion-titulo">Buscar</p></div>
+            <div class="teclas-code">Ctrl + F</div>
+            <p class="desc-text">Busca texto dentro del código</p>
+        </div>
+        <div class="truco-card cat-TEXT_EDIT_ACODE">
+            <div class="card-header"><p class="accion-titulo">Copiar / Pegar</p></div>
+            <div class="teclas-code">Ctrl + C / V</div>
+            <p class="desc-text">Estándar de edición de texto</p>
+        </div>
+
+        <div class="truco-card cat-BROWSER_WEB">
+            <div class="card-header"><p class="accion-titulo">Nueva Pestaña</p></div>
+            <div class="teclas-code">Ctrl + T</div>
+            <p class="desc-text">Abre una pestaña nueva</p>
+        </div>
+        <div class="truco-card cat-BROWSER_WEB">
+            <div class="card-header"><p class="accion-titulo">Cerrar Pestaña</p></div>
+            <div class="teclas-code">Ctrl + W</div>
+            <p class="desc-text">Cierra la pestaña actual</p>
+        </div>
+        <div class="truco-card cat-BROWSER_WEB">
+            <div class="card-header"><p class="accion-titulo">Barra Direcciones</p></div>
+            <div class="teclas-code">Alt + D</div>
+            <p class="desc-text">Salta a la barra de URL</p>
+        </div>
+    </div>
+
+    <script src="index.js"></script>
+</body>
+</html>
